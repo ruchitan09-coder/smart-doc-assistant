@@ -1,0 +1,3 @@
+import { prisma } from "@/lib/prisma"; 
+import type { User as SupabaseUser } from "@supabase/supabase-js"; 
+export async function getOrCreateUser(authUser: SupabaseUser) { const existing = await prisma.user.findUnique({ where: { id: authUser.id } }); if (existing) return existing; return prisma.user.upsert({ where: { id: authUser.id }, update: {}, create: { id: authUser.id, email: authUser.email ?? "" }, }); }
