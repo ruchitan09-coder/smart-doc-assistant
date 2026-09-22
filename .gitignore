@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.env
+.env.local
+*.log
+.DS_Store
+/prisma/dev.db
+
+# Trained model artifacts (large binary files) -- train locally or in CI,
+# don't commit them. Keep the folder structure via .gitkeep.
+ml/models/*
+!ml/models/.gitkeep
+ml/**/checkpoints/
+__pycache__/
+*.pyc

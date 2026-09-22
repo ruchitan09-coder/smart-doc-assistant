@@ -1,0 +1,15 @@
+# Custom document classification model -- training pipeline dependencies.
+# Install with: pip install -r ml/requirements.txt
+# (ml/service/requirements.txt is a smaller, inference-only subset for deployment.)
+
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.4
+joblib>=1.3
+
+# Only needed for ml/training/train_transformer.py (DistilBERT fine-tuning).
+# Comment these out if you only want the TF-IDF baseline.
+torch>=2.2
+transformers>=4.40
+datasets>=2.19
+evaluate>=0.4

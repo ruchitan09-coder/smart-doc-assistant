@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base ------------------------------------------------------------- */
+
+body {
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection {
+  background-color: theme("colors.gold.400");
+  color: theme("colors.ink.900");
+}
+
+/* Visible keyboard focus everywhere, no exceptions. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid theme("colors.brand.500");
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.prose-sm :where(p, ul, ol) {
+  margin: 0.4rem 0;
+}
+
+/* Page transition ---------------------------------------------------
+   One quiet, consistent entrance for route changes -- not layered with
+   per-section reveals inside the page itself. */
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-transition {
+  animation: fadeSlideIn 0.25s ease-out;
+}
+
+/* Status pills -------------------------------------------------------- */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.status-ready { background: #DCFCE7; color: #15803D; }
+.dark .status-ready { background: rgba(21,128,61,0.2); color: #4ADE80; }
+.status-processing { background: #FEF3C7; color: #B45309; }
+.dark .status-processing { background: rgba(180,83,9,0.2); color: #FBBF24; }
+.status-uploading { background: #E9EAEF; color: #565A66; }
+.dark .status-uploading { background: rgba(148,152,166,0.2); color: #B7BAC5; }
+.status-failed { background: #FEE2E2; color: #B91C1C; }
+.dark .status-failed { background: rgba(185,28,28,0.2); color: #F87171; }
+
+/* Ruled-paper hero motif ----------------------------------------------
+   Replaces blurred gradient "blob" decoration with something grounded in
+   the actual subject: a document. A faint ruled-page pattern, fixed and
+   quiet, plus one deliberate accent mark -- not scattered ambient motion. */
+
+.ruled-paper {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 35px,
+    rgba(58, 63, 166, 0.06) 35px,
+    rgba(58, 63, 166, 0.06) 36px
+  );
+}
+.dark .ruled-paper {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 35px,
+    rgba(231, 169, 60, 0.05) 35px,
+    rgba(231, 169, 60, 0.05) 36px
+  );
+}
+
+/* The highlighter mark: a hand-set underline behind text, standing in for
+   the product's core act (marking the exact passage that answers a
+   question). Used once, deliberately, on demo/document content -- never on
+   headline words (that's decoration; here it illustrates the feature). */
+.highlight-mark {
+  background-image: linear-gradient(theme("colors.gold.400"), theme("colors.gold.400"));
+  background-repeat: no-repeat;
+  background-size: 100% 0.5em;
+  background-position: 0 88%;
+  padding: 0 0.15em;
+}
+
+/* Single orchestrated hero entrance ------------------------------------ */
+
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-rise {
+  animation: heroRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Restrained content-card hover: a border/shadow shift only, no icon
+   rotation, scale, or glow ring -- one quiet affordance, applied uniformly. */
+.interactive-card {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.interactive-card:hover {
+  border-color: theme("colors.brand.300");
+  box-shadow: 0 4px 16px rgba(27, 30, 39, 0.06);
+}
+.dark .interactive-card:hover {
+  border-color: theme("colors.brand.700");
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}

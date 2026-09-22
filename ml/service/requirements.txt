@@ -1,0 +1,16 @@
+# Inference-only dependencies for ml/service/main.py. Smaller than
+# ml/requirements.txt (which also includes training libraries) -- use this
+# one for deploying the service itself.
+
+fastapi>=0.111
+uvicorn[standard]>=0.29
+pydantic>=2.7
+joblib>=1.3
+scikit-learn>=1.4
+numpy>=1.26
+
+# Only required if a transformer model has been trained and placed in
+# ml/models/distilbert_classifier -- omit these two to keep the deployed
+# image small if you're only serving the TF-IDF baseline.
+torch>=2.2
+transformers>=4.40

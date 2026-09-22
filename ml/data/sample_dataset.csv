@@ -1,0 +1,81 @@
+text,label
+"Invoice number INV-2041 amount due $1,250.00 payment terms net 30 days please remit payment to the address below",invoice
+"Bill to customer account total balance due invoice date due date itemized charges quantity unit price subtotal tax total amount",invoice
+"Please find attached invoice for services rendered this month payment due within 30 days of receipt bank transfer details enclosed",invoice
+"Invoice summary line items description quantity rate amount grand total outstanding balance overdue payment reminder",invoice
+"Tax invoice GST amount billing address shipping address purchase order number payment due upon receipt",invoice
+"Statement of charges for consulting hours billed at hourly rate total invoice amount payable within thirty days",invoice
+"Monthly subscription invoice charge card ending in 4242 next billing date renewal amount due",invoice
+"Freight invoice shipment charges handling fee total due remit payment via wire transfer reference invoice number",invoice
+"This agreement is entered into by and between the parties hereinafter referred to as the client and the contractor",contract
+"Terms and conditions of this contract shall remain in effect for a period of twelve months from the effective date",contract
+"The parties hereby agree to the following terms termination clause governing law indemnification and confidentiality obligations",contract
+"Service agreement scope of work deliverables payment schedule termination for convenience and breach of contract provisions",contract
+"Non disclosure agreement between the disclosing party and the receiving party regarding confidential information",contract
+"Lease agreement tenant landlord monthly rent security deposit renewal option and default remedies",contract
+"Employment contract job title compensation benefits probationary period termination notice period non compete clause",contract
+"This master services agreement governs the relationship between vendor and customer including liability limitations",contract
+"Abstract this paper presents a novel approach to the problem introduction related work methodology experiments results conclusion",research_paper
+"We propose a new algorithm and evaluate it on several benchmark datasets our experiments show significant improvement over baselines",research_paper
+"In this study we investigate the effects of the independent variable on the dependent variable using a controlled experiment",research_paper
+"Literature review prior work has explored related approaches however our method differs in the following key ways",research_paper
+"The results were statistically significant p value less than 0.05 we discuss the implications for future research",research_paper
+"This dissertation examines theoretical framework hypothesis testing data collection methodology and statistical analysis",research_paper
+"Peer reviewed journal article citation references bibliography figures tables appendix supplementary materials",research_paper
+"Our contribution is threefold first we introduce a new dataset second a novel model architecture third comprehensive evaluation",research_paper
+"Curriculum vitae work experience education skills software engineer five years experience in full stack development",resume
+"Objective seeking a challenging position professional summary key skills relevant experience references available upon request",resume
+"Bachelor of science in computer science graduated with honors relevant coursework internship experience projects",resume
+"Work history senior developer led a team of engineers responsible for architecture design and code reviews",resume
+"Skills proficient in python javascript react node.js sql project management communication and leadership",resume
+"Professional experience marketing manager increased revenue by 30 percent managed cross functional teams",resume
+"Education certifications awards volunteer experience languages spoken contact information linkedin profile",resume
+"Career objective detail oriented accountant with strong analytical skills and experience in financial reporting",resume
+"Executive summary this quarterly report covers key performance indicators revenue growth and operational highlights",report
+"Annual report financial highlights balance sheet income statement cash flow statement shareholder letter",report
+"Progress report status update on project milestones completed tasks upcoming deliverables risks and issues",report
+"Market research report analysis of industry trends competitive landscape and growth opportunities",report
+"Incident report summary of the event root cause analysis corrective actions and recommendations",report
+"Performance review report employee achievements areas for improvement goals for next quarter",report
+"Audit report findings observations recommendations management response and follow up actions",report
+"Sales report monthly figures by region product category year over year comparison and forecast",report
+"Homework assignment question 1 solve for x show your work question 2 explain the concept in your own words",assignment
+"Assignment instructions due date submission guidelines rubric grading criteria late penalty policy",assignment
+"Problem set exercises chapter review questions answer each question completely and show all calculations",assignment
+"Essay assignment write a 1500 word essay on the assigned topic cite at least three academic sources",assignment
+"Lab assignment procedure materials needed observations data table analysis questions conclusion",assignment
+"Group project assignment each team member is responsible for a section presentation due next week",assignment
+"Coding assignment implement the function according to the specification unit tests must pass submit via github",assignment
+"Reading assignment chapters 3 through 5 prepare discussion questions for next class quiz on friday",assignment
+"Company policy employees must adhere to the following guidelines regarding conduct attendance and workplace safety",policy
+"Privacy policy we collect and use personal information as described below your rights and choices data retention",policy
+"Remote work policy eligibility requirements equipment expectations core hours and communication guidelines",policy
+"Code of conduct policy anti harassment discrimination reporting procedures disciplinary actions",policy
+"Leave of absence policy vacation sick leave parental leave eligibility and approval process",policy
+"Data security policy access control encryption incident response and acceptable use of company systems",policy
+"Refund and return policy conditions for returns time limit restocking fee and exceptions",policy
+"Expense reimbursement policy eligible expenses receipt requirements approval workflow and submission deadline",policy
+"Receipt thank you for your purchase item quantity price subtotal tax total paid change due",receipt
+"Payment receipt transaction id date time amount paid method of payment cardholder name authorization code",receipt
+"Store receipt cashier register number items purchased total amount tendered thank you come again",receipt
+"Rent receipt received from tenant the sum of monthly rent payment for the period landlord signature",receipt
+"Donation receipt thank you for your generous contribution tax deductible amount organization name",receipt
+"Restaurant receipt table server order items subtotal gratuity total card ending in digits",receipt
+"Parking receipt entry time exit time duration amount paid lot number license plate",receipt
+"Gas station fuel receipt gallons price per gallon total amount pump number transaction time",receipt
+"In the matter of before the court plaintiff versus defendant case number motion filed pursuant to statute",legal_document
+"Power of attorney the undersigned hereby appoints attorney in fact to act on behalf of the principal",legal_document
+"Last will and testament the testator being of sound mind hereby declares this to be the last will revoking prior wills",legal_document
+"Affidavit I the undersigned being duly sworn depose and state the following facts under penalty of perjury",legal_document
+"Notice of legal proceedings you are hereby notified that a complaint has been filed against you in the above case",legal_document
+"Terms of service governing law jurisdiction limitation of liability arbitration clause user obligations",legal_document
+"Court order it is hereby ordered adjudged and decreed that the following relief is granted",legal_document
+"Trademark registration application classes of goods and services specimen of use declaration",legal_document
+"Business plan executive summary market analysis competitive advantage financial projections funding request",business_document
+"Meeting minutes attendees agenda items discussed decisions made action items and next meeting date",business_document
+"Memo to all staff from management regarding the upcoming change in office hours effective next month",business_document
+"Request for proposal scope of work submission requirements evaluation criteria and proposal deadline",business_document
+"Purchase order supplier name delivery address item description quantity unit price total order value",business_document
+"Company newsletter announcing new product launch team updates and upcoming events for employees",business_document
+"Standard operating procedure step by step instructions responsible roles and quality checkpoints",business_document
+"Partnership proposal outlining mutual benefits proposed terms and next steps for collaboration",business_document

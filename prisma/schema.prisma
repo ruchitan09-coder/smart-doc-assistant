@@ -1,0 +1,184 @@
+// Prisma schema for Smart Document Assistant
+// Uses Supabase Postgres. Vector similarity search uses pgvector, accessed via
+// raw SQL helpers in src/lib/vector.ts because Prisma's query builder does not
+// natively support the `vector` column type.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ProcessingStatus {
+  UPLOADING
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  DONE
+  FAILED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+// Mirrors Supabase's auth.users table by id. We keep our own row so we can
+// attach app-specific relations (documents, conversations) with foreign keys.
+model User {
+  id        String   @id // matches Supabase auth.users.id (uuid)
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  documents     Document[]
+  conversations Conversation[]
+}
+
+model Document {
+  id               String            @id @default(uuid())
+  ownerId          String
+  owner            User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  fileName         String
+  fileType         String // pdf | docx | txt | png | jpg
+  fileSizeBytes    Int
+  storagePath      String // path inside the Supabase Storage bucket
+  pageCount        Int?
+  processingStatus ProcessingStatus  @default(UPLOADING)
+  errorMessage     String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  chunks            DocumentChunk[]
+  sourceReferences  SourceReference[]
+  conversationDocs  ConversationDocument[]
+  modelPredictions  ModelPrediction[]
+  processingJobs    ProcessingJob[]
+
+  @@index([ownerId])
+}
+
+// A durable, retryable unit of work for the extract -> chunk -> embed ->
+// classify pipeline. Replaces the old fire-and-forget internal fetch: if the
+// app crashes or a step throws mid-pipeline, the job stays claimable instead
+// of silently vanishing. Rows are created PENDING on upload, claimed RUNNING
+// by whichever process picks them up next (either the immediate self-trigger
+// on upload, or the periodic worker in /api/jobs/run), and retried with
+// backoff up to maxAttempts before being marked FAILED for good.
+model ProcessingJob {
+  id          String    @id @default(uuid())
+  documentId  String
+  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  status      JobStatus @default(PENDING)
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(3)
+  nextRunAt   DateTime  @default(now())
+  lockedAt    DateTime? // set when a worker claims the job; used to detect and reclaim stale RUNNING jobs
+  lastError   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, nextRunAt])
+  @@index([documentId])
+}
+
+// Atomic fixed-window rate limiting, enforced in Postgres so it works
+// correctly across multiple serverless instances (an in-memory counter
+// would reset per cold start / per instance and not actually limit
+// anything on Vercel). See src/lib/rate-limit.ts.
+model RateLimitBucket {
+  key         String   @id // e.g. "chat:<userId>" or "upload:<userId>"
+  windowStart DateTime
+  count       Int      @default(0)
+}
+
+// Embeddings are stored via raw SQL (see src/lib/vector.ts) because the
+// `embedding` column uses the pgvector type, which Prisma exposes only as
+// Unsupported() -- fine for reads/writes done through $queryRaw/$executeRaw.
+model DocumentChunk {
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex Int
+  content    String
+  pageNumber Int?
+  embedding  Unsupported("vector(384)")?
+  createdAt  DateTime @default(now())
+
+  sourceReferences SourceReference[]
+
+  @@index([documentId])
+}
+
+model Conversation {
+  id        String   @id @default(uuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title     String   @default("New conversation")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages          Message[]
+  conversationDocs  ConversationDocument[]
+
+  @@index([ownerId])
+}
+
+// Join table: a conversation can reference multiple documents (multi-document chat)
+model ConversationDocument {
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  documentId     String
+  document       Document     @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@id([conversationId, documentId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String
+  createdAt      DateTime     @default(now())
+
+  sourceReferences SourceReference[]
+}
+
+model SourceReference {
+  id         String        @id @default(uuid())
+  messageId  String
+  message    Message       @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  documentId String
+  document   Document      @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkId    String
+  chunk      DocumentChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  pageNumber Int?
+  excerpt    String
+}
+
+// Result of running the custom-trained document classification model against
+// a document. A document can be reclassified (e.g. after a new model version
+// ships), so this is one-to-many rather than a single column on Document --
+// predictionHistory keeps every run instead of overwriting the last one.
+model ModelPrediction {
+  id             String   @id @default(uuid())
+  documentId     String
+  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  modelVersion   String // e.g. "tfidf-logreg-v1" or "distilbert-doc-classifier-v1"
+  modelSource    String   @default("local") // "local" (in-app TS classifier) | "remote" (Python inference service)
+  predictedClass String // one of the classes in src/lib/classifier/labels.ts
+  confidence     Float // 0..1
+  scores         Json // full class -> probability breakdown, for the UI chart
+  createdAt      DateTime @default(now())
+
+  @@index([documentId])
+}
